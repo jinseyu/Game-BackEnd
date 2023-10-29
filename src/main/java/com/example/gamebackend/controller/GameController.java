@@ -35,6 +35,7 @@ public class GameController {
         System.out.println("안녕");
         return dto.getEmail();
     }
+
 }
 
 

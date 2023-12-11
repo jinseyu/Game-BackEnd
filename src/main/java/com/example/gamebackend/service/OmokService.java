@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class OmokService {
 
     public String judge(OmokDTO omokDTO) {
+
         String color = omokDTO.getColor();                  //검은돌(1),흰돌(2)
         String location = omokDTO.getLocation();            // 좌표값(어디에 놨는지)
         String situation = omokDTO.getSituation();          //현재상황
@@ -16,10 +17,12 @@ public class OmokService {
 
         if (isEmptySpot(color, location, numbers)) {
             return " 돌을 놓을 수 없습니다";
-        }   else if (is4X3(color, location, numbers)) {
+        } else if (is4X3(color, location, numbers)) {
             return "4*3 판정입니다";
-        }  else if (isBlackWin(color, location, numbers)) {
+        } else if (isBlackWin(color, location, numbers)) {
             return "흑돌 승리입니다";
+        } else if (isWhiteWin(color,location,numbers)) {
+            return "백돌 승리입니다";
         } else if (is3X3(color, location, numbers)) {
             return "3*3판정입니다";
         }
@@ -59,8 +62,6 @@ public class OmokService {
 
         //color가 1이면 검은돌, color가 2면 흰돌
         String targetColor = (color.equals("1")) ? "1" : "2";
-
-
 
         // 내 주변 1칸 차이 : 나를 중심으로 세 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 4개 중 2개 이상이면 33
         int countBarCenter = 0;
@@ -226,6 +227,7 @@ public class OmokService {
         }
 
         // 양 옆에 다른 돌 찾기
+
         hasDifferentStones=false;
 
         for (int dx = -2; dx <= 2; dx++) {
@@ -352,6 +354,7 @@ public class OmokService {
 
             int nx = x + dy;
             int ny = y ;
+
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
                 if (x != nx && y == ny) {
 
@@ -390,6 +393,7 @@ public class OmokService {
         }
 
         //좌하향 대각선
+
         sameColorCount = 0;
 
         for (int dy = 0; dy <= 2; dy++) {
@@ -482,6 +486,7 @@ public class OmokService {
         }
 
         //좌상향 대각선
+
         sameColorCount = 0;
 
         for (int dy = 0; dy <= 2; dy++) {
@@ -1016,7 +1021,600 @@ public class OmokService {
         int x = Integer.parseInt(location.split(",")[0]);       //좌표값의 x축
         int y = Integer.parseInt(location.split(",")[1]);       //좌표값의 y축
         //color가 1이면 검은돌, color가 2면 흰돌
-        String targetColor = (color.equals("1")) ? "1" : "2";
+        String targetColor = "1";
+
+        int countBar1 = 0;
+        int countBar2 = 0;
+        int countBar3 = 0;
+        int countBar4 = 0;
+        int countBar5 = 0;
+        int countBar6 = 0;
+        int countBar7 = 0;
+        int sameColor = 0;
+        //1번 내 주변 2칸 차이 : 나를 중심으로 다섯 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 4개 중 1개 이상이면 흑돌승
+        //가로 다섯칸짜리 막대기
+        for (int dy = -2; dy <= 2; dy++) {
+
+            int nx = x;
+            int ny = y - dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar1++;
+            }
+        }
+
+        //우하향 대각선
+        sameColor = 0;
+
+        for (int dy = -2; dy <= 2; dy++) {
+
+            int nx = x - dy;
+            int ny = y - dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar1++;
+            }
+        }
+
+        //세로 막대기
+        sameColor = 0;
+
+        for (int dy = -2; dy <= 2; dy++) {
+
+            int nx = x - dy;
+            int ny = y;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y == ny) {
+
+                }
+
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar1++;
+            }
+        }
+
+        //좌하향 대각선
+        sameColor = 0;
+
+        for (int dy = -2; dy <= 2; dy++) {
+
+            int nx = x - dy;
+            int ny = y + dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar1++;
+            }
+        }
+
+        // 2번 내 주변 5칸 차이 : 나를 시작(아래 왼쪽 꼭짓접)으로 다섯 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 3개 중 1개 이상이면 흑돌 승
+
+        //꼭짓점에서 오른쪽 향하는막대기
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x;
+            int ny = y + dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar2++;
+            }
+        }
+
+        //우상향 대각선
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x - dy;
+            int ny = y + dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y == ny){
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar2++;
+            }
+        }
+
+        //꼭짓점으로 부터 세로
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x - dy;
+            int ny = y;
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y == ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar2++;
+            }
+        }
+
+        // 3번 내 주변 5칸 차이 : 나를 시작(아래 오른쪽 꼭짓접)으로 다섯 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 3개 중 1개 이상이면 흑돌승
+
+        //꼭짓점으로부터 왼쪽으로 향하는 막대기
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x ;
+            int ny = y - dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar3++;
+            }
+        }
+
+        //좌상향 막대기
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x - dy ;
+            int ny = y - dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y != ny){
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar3++;
+            }
+        }
+
+        //새로 막대기
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x - dy ;
+            int ny = y;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y == ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor==4) {
+                countBar3++;
+            }
+        }
+
+        // 4번 내 주변 5칸 차이 : 나를 시작(오른쪽 위 꼭짓접)으로 다섯 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 3개 중 1개 이상이면 흑돌승
+
+        //꼭짓점으로부터 왼쪽으로 향하는 막대기
+
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x ;
+            int ny = y - dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar4++;
+            }
+        }
+
+        //좌하향 대각선
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x + dy;
+            int ny = y - dy;
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar4++;
+            }
+        }
+
+        //세로 막대기
+        sameColor = 0;
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x + dy;
+            int ny = y;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y == ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar4++;
+            }
+        }
+
+        // 5번 내 주변 5칸 차이 : 나를 시작(오른쪽 위 꼭짓접)으로 다섯 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 3개 중 1개 이상이면 흑돌승
+
+        //꼭짓점으로부터 오른쪽으로 향하는 막대기
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x ;
+            int ny = y + dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar5++;
+            }
+        }
+
+        //꼭짓점으로부터 우하향으로 향하는 막대기
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x+dy ;
+            int ny = y+dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar5++;
+            }
+        }
+
+        //꼭짓점으로부터 새로(아래) 향함
+        sameColor = 0;
+
+        for (int dy = 0; dy <= 4; dy++) {
+
+            int nx = x+dy;
+            int ny = y;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y == ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                } else {
+                    //연속되는 값이 아닐 경우 더이상 탐색 안해도됨
+                    continue;
+                }
+            }
+            if (sameColor == 4) {
+                countBar5++;
+            }
+        }
+
+        // 6번 나를 중심으로 한칸 세칸 으로 다섯 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 4개 중 1개 이상이면 흑돌승
+
+        //가로 막대기 11101
+        sameColor = 0;
+
+        for (int dy = -3; dy <= 1; dy++) {
+
+            int nx = x;
+            int ny = y+dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }
+            }
+            if (sameColor == 4) {
+                countBar6++;
+            }
+        }
+
+        //세로 막대기
+        sameColor = 0;
+        for (int dy = -3; dy <= 1; dy++) {
+
+            int nx = x-dy;
+            int ny = y;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y == ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }
+            }
+            if (sameColor == 4) {
+                countBar6++;
+            }
+        }
+
+        //좌하향 막대기
+        sameColor = 0;
+        for (int dy = -3; dy <= 1; dy++) {
+
+            int nx = x-dy;
+            int ny = y+dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }
+            }
+            if (sameColor == 4) {
+                countBar6++;
+            }
+        }
+
+        //우하향 막대기
+        sameColor = 0;
+        for (int dy = -3; dy <= 1; dy++) {
+
+            int nx = x - dy;
+            int ny = y - dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x != nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }
+            }
+            if (sameColor == 4) {
+                countBar6++;
+                }
+            }
+        //7번 나를 중심으로 한칸 세칸 으로 다섯 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 4개 중 1개 이상이면 흑돌승
+
+        //가로 막대기 10111
+        sameColor = 0;
+
+        for (int dy = -1; dy <= 3; dy++) {
+
+                int nx = x;
+                int ny = y+dy;
+
+                if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                    if (x == nx && y != ny) {
+
+                    }
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColor++;
+                    }
+                }
+                if (sameColor == 4) {
+                    countBar7++;
+                }
+            }
+
+        //세로 막대기
+        sameColor = 0;
+
+        for (int dy = -1; dy <= 3; dy++) {
+
+            int nx = x-dy;
+            int ny = y;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }
+            }
+            if (sameColor == 4) {
+                countBar7++;
+            }
+        }
+
+        //우상향 막대기
+        sameColor = 0;
+
+        for (int dy = -1; dy <= 3; dy++) {
+
+            int nx = x - dy;
+            int ny = y+dy;
+
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }
+            }
+            if (sameColor == 4) {
+                countBar7++;
+            }
+        }
+
+        //좌상향 막대기
+        sameColor = 0;
+
+        for (int dy = -1; dy <= 3; dy++) {
+
+            int nx = x - dy;
+            int ny = y - dy;
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
+
+                }
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
+                }
+            }
+            if (sameColor == 4) {
+                countBar7++;
+            }
+        }
+
+        if (countBar1==1){
+            return true;
+        } else if (countBar2==1) {
+            return true;
+        } else if (countBar3==1) {
+            return true;
+        }else if (countBar4==1) {
+            return true;
+        }else if (countBar5==1) {
+            return true;
+        }else if (countBar6==1) {
+            return true;
+        }else if (countBar7==1) {
+            return true;
+        }
+
+        return false;
+
+        }
+
+
+    public boolean isWhiteWin(String color,String location,String[][] numbers) {
+
+        int x = Integer.parseInt(location.split(",")[0]);       //좌표값의 x축
+        int y = Integer.parseInt(location.split(",")[1]);       //좌표값의 y축
+        //color가 1이면 검은돌, color가 2면 흰돌
+        String targetColor = "2";
 
         int countBar1 = 0;
         int countBar2 = 0;
@@ -1494,8 +2092,8 @@ public class OmokService {
             }
             if (sameColor == 4) {
                 countBar6++;
-                }
             }
+        }
         //7번 나를 중심으로 한칸 세칸 으로 다섯 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 4개 중 1개 이상이면 흑돌승
 
         //가로 막대기 10111
@@ -1503,21 +2101,21 @@ public class OmokService {
 
         for (int dy = -1; dy <= 3; dy++) {
 
-                int nx = x;
-                int ny = y+dy;
+            int nx = x;
+            int ny = y+dy;
 
-                if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                    if (x == nx && y != ny) {
+            if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
+                if (x == nx && y != ny) {
 
-                    }
-                    if (numbers[nx][ny].equals(targetColor)) {
-                        sameColor++;
-                    }
                 }
-                if (sameColor == 4) {
-                    countBar7++;
+                if (numbers[nx][ny].equals(targetColor)) {
+                    sameColor++;
                 }
             }
+            if (sameColor == 4) {
+                countBar7++;
+            }
+        }
 
         //세로 막대기
         sameColor = 0;
@@ -1599,11 +2197,8 @@ public class OmokService {
 
         return false;
 
-        }
     }
-
-
-
+}
 
 
 

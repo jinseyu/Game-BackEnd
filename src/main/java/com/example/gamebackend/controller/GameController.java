@@ -1,3 +1,4 @@
+/*
 package com.example.gamebackend.controller;
 
 
@@ -32,10 +33,12 @@ public class GameController {
         int seqInt = Integer.parseInt(seq);
 
         GameDTO dto = gameService.getUserDTOById(seqInt);
-
+        System.out.println("안녕");
         return dto.getEmail();
     }
+
 }
 
 
 
+*/

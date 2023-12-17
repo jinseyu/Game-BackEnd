@@ -1,3 +1,4 @@
+/*
 package com.example.gamebackend.service;
 
 import com.example.gamebackend.dto.GameDTO;
@@ -23,3 +24,4 @@ public class GameService {
         return gameMapper.selectUserDTOById(seq);
    }
 }
+*/

@@ -995,7 +995,7 @@ public class OmokService {
                     }
                 }
             }
-            if (sameColorCount == 3) {
+            if (sameColorCount == 3)  {
                 StartCountBar4++;
             }
             if (sameColorCount == 2) {

@@ -130,12 +130,11 @@ public class OmokService {
         // 양 옆에 다른 돌 찾기(하향)
         boolean hasDifferentStones12 = checkDifferentStones12(x, y, targetColor, numbers);
 
-
-
         // 내 주변 1칸 차이 : 나를 중심으로 세 칸짜리 막대기 (내 색깔로 가득차있는) 가 총 4개 중 2개 이상이면 33
 
         int countBarCenter = 0;
 
+        System.out.println("horizon="+horizontalCount);
         //가로막대기,양옆에 다른돌찾기(가로)
         if ((horizontalCount == 2 && !hasDifferentStones1) ) {
             countBarCenter++;
@@ -221,6 +220,7 @@ public class OmokService {
 
     // 나를 중심으로 시작하는 함수
 
+
     //가로 막대기
     public int countSameColor1(int x, int y, String targetColor, String[][] numbers) {
 
@@ -231,17 +231,18 @@ public class OmokService {
             int ny = y + dy;
 
             if (nx >= 0 && nx < numbers.length && ny >= 0 && ny < numbers[0].length) {
-                if (x == nx && y != ny) {
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+
+                        sameColorCount++;
+
+                    }
                 }
             }
         }
-
         return sameColorCount;
     }
+
     // 양 옆에 다른 돌 찾기
     public boolean checkDifferentStones1(int x, int y, String targetColor, String[][] numbers) {
 
@@ -279,12 +280,13 @@ public class OmokService {
             int ny = y;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y == ny) {
+                if (!(x == nx && y == ny)) {
 
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
 
-                    sameColorCount++;
+                        sameColorCount++;
+
+                    }
 
                 }
             }
@@ -328,11 +330,10 @@ public class OmokService {
             int ny = y - dy;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y != ny) {
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -373,11 +374,10 @@ public class OmokService {
             int ny = y + dy;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y != ny) {
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -420,12 +420,10 @@ public class OmokService {
             int ny = y + dy;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x == nx && y != ny) {
-
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -441,13 +439,11 @@ public class OmokService {
             int ny = y + dx ;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x == nx && y != ny) {
-
-                }
+                if (!(x == nx && y == ny)) {
                 if (!numbers[nx][ny].equals(targetColor)&& !numbers[nx][ny].equals("0")) {
 
                     hasDifferentStones = true; // true -> 양쪽에 내가 놓은 돌의 다른 색의 돌이 놓여있는지
-
+                    }
                 }
             }
         }
@@ -466,12 +462,10 @@ public class OmokService {
             int ny = y + dy;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y != ny) {
-
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -512,12 +506,10 @@ public class OmokService {
             int ny = y ;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y == ny) {
-
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -558,13 +550,10 @@ public class OmokService {
             int ny = y - dy;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y != ny) {
-
-
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -605,12 +594,10 @@ public class OmokService {
             int ny = y - dy;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x == nx && y != ny) {
-
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -651,12 +638,11 @@ public class OmokService {
             int ny = y - dy;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y != ny) {
+                if (!(x == nx && y == ny)) {
 
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -697,12 +683,10 @@ public class OmokService {
             int ny = y;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y == ny) {
-
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
@@ -743,12 +727,10 @@ public class OmokService {
             int ny = y + dy;
 
             if (nx >= 0 && nx < 13 && ny >= 0 && ny < 13) {
-                if (x != nx && y != ny) {
-
-                    // 추가적인 조건이나 작업이 필요한 경우 여기에 작성
-                }
-                if (numbers[nx][ny].equals(targetColor)) {
-                    sameColorCount++;
+                if (!(x == nx && y == ny)) {
+                    if (numbers[nx][ny].equals(targetColor)) {
+                        sameColorCount++;
+                    }
                 }
             }
         }
